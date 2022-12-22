@@ -1,16 +1,17 @@
 #ifndef MODEL_H
 #define MODEL_H
-#include "view.h"
-#include <QObject>
 
-class Model{
+#include <QObject>
+#include "view.h"
+
+class Model : public QObject {
 protected:
-    View view;
+    View *view;
 
 public:
     Model();
     void update();
-    void getState();
+    int getState();
 };
 
 #endif // MODEL_H

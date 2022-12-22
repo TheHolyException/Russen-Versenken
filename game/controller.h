@@ -4,12 +4,14 @@
 #include <QObject>
 #include "view.h"
 
-class Controller {
+class Controller : public QObject {
     Q_OBJECT
+protected:
+    View *view;
+    Model *model;
 public:
     Controller();
-protected:
-    View view;
+    void action();
 };
 
 #endif // CONTROLLER_H

@@ -3,3 +3,11 @@
 View::View() {
 
 }
+
+void View::update() {
+
+}
+
+void View::notify() {
+
+}
