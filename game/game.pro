@@ -9,11 +9,15 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    controller.cpp \
     main.cpp \
-    russenversenken.cpp
+    russenversenken.cpp \
+    view.cpp
 
 HEADERS += \
-    russenversenken.h
+    controller.h \
+    russenversenken.h \
+    view.h
 
 FORMS += \
     russenversenken.ui
