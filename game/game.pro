@@ -10,9 +10,11 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    model.cpp \
     russenversenken.cpp
 
 HEADERS += \
+    model.h \
     russenversenken.h
 
 FORMS += \
