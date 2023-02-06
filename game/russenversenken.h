@@ -18,7 +18,9 @@ public:
     RussenVersenken(QWidget *parent = nullptr);
     ~RussenVersenken();
     void paintEvent(QPaintEvent *event) override;
-    QList<QPoint> calcualtePoints(int center,int radius);
+    QList<QPoint> calcualtePoints(int centerX, int centerY,int radius);
+    QPolygon calculatePoly(int x, int y,int radius);
+    QPoint calculateTextPoint(int x, int y,int radius);
 
 
 private:
