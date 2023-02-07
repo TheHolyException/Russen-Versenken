@@ -1,5 +1,6 @@
 #include "server.h"
 #include <QObject>
+#include <QDateTime>
 
 Server::Server(QObject *parent) : QObject(parent) {
     server = new QTcpServer;
@@ -33,8 +34,25 @@ void Server::startRead() {
 
     if (!socket->canReadLine()) return;
 
-    QStringList tokens = QString(socket->readLine()).split("\r\n");
-    qDebug() << tokens[0];
-    socket->write("Hello World from Server");
+
+    QStringList tokens = QString( socket->readLine() ).split( "\r\n" );
+    qDebug() << "Received" << tokens << tokens[0];
+    if ( tokens[0] == "GET" )
+    {
+        qDebug() << "malaka";
+        QTextStream os( socket );
+        os.setAutoDetectUnicode( true );
+        os << "HTTP/1.0 200 Ok\r\n"
+        "Content-Type: text/html; charset=\"utf-8\"\r\n"
+        "\r\n"
+        "<h1>Hallo!</h1>\n"
+        << QDateTime::currentDateTime().toString() << "\n";
+        socket->close();
+
+        if ( socket->state() == QTcpSocket::UnconnectedState )
+        {
+            delete socket;
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
-QT       += core gui
+QT += core gui
 QT += network
+QT += websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,16 +14,18 @@ SOURCES += \
     controller.cpp \
     main.cpp \
     model.cpp \
-    onlineclient.cpp \
     russenversenken.cpp \
-    view.cpp
+    util/playercommanager.cpp \
+    view.cpp \
+    websocketclient.cpp
 
 HEADERS += \
     model.h \
     controller.h \
-    onlineclient.h \
     russenversenken.h \
-    view.h
+    util/playercommanager.h \
+    view.h \
+    websocketclient.h
 
 FORMS += \
     russenversenken.ui

@@ -1,12 +1,12 @@
 #include <QCoreApplication>
 
-#include "server.h"
+#include "network/socket/websocketserver.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
     qDebug("Hello World");
-    Server server;
+    /*WebSocketServer &server = */WebSocketServer::getInstance(8888);
 
     return a.exec();
 }
