@@ -16,6 +16,7 @@ SOURCES += \
     main.cpp \
     model.cpp \
     russenversenken.cpp \
+    util/jsonutils.cpp \
     util/playercommanager.cpp \
     view.cpp \
     websocketclient.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     model.h \
     controller.h \
     russenversenken.h \
+    util/jsonutils.h \
     util/playercommanager.h \
     view.h \
     websocketclient.h

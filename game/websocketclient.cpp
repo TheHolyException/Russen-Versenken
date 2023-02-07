@@ -24,7 +24,18 @@ void WebSocketClient::connectToServer(const QUrl &url)
 
 void WebSocketClient::sendMessage(const QString &message)
 {
+    qDebug() << "Sending: " + message;
     m_webSocket->sendTextMessage(message);
+}
+
+void WebSocketClient::sendPacket(int packetID, QString &message) {
+    std::map<std::string, JSONUtils::Value> data {
+        {"code", packetID},
+        {"UUID", pmm->getUUID().toStdString()},
+        {"payload", message.toStdString()}
+    };
+
+    sendMessage(QString::fromStdString(JSONUtils::generateJSON(data)));
 }
 
 void WebSocketClient::onConnected()
@@ -39,5 +50,6 @@ void WebSocketClient::onDisconnected()
 
 void WebSocketClient::onError(QAbstractSocket::SocketError error)
 {
+    qDebug() << "ERROR";
     //emit error(m_webSocket->errorString());
 }

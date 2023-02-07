@@ -7,6 +7,7 @@
 #include <QWebSocket>
 
 #include "util/playercommanager.h"
+#include "util/jsonutils.h"
 
 class WebSocketClient : public QObject
 {
@@ -18,9 +19,9 @@ public:
         static WebSocketClient instance;
         return instance;
     }
-
     void connectToServer(const QUrl &url);
     void sendMessage(const QString &message);
+    void sendPacket(int packetId, QString &payload);
 
 signals:
     void connected();

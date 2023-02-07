@@ -16,6 +16,7 @@ SOURCES += \
         network/socket/websocketserver.cpp \
         network/utils/jsonutils.cpp \
         network/utils/mariadb.cpp \
+        network/utils/servercommanager.cpp \
         network/utils/ws_utils.cpp \
         network/ws/webserver.cpp \
         main.cpp
@@ -32,5 +33,6 @@ HEADERS += \
     network/socket/websocketserver.h \
     network/utils/jsonutils.h \
     network/utils/mariadb.h \
+    network/utils/servercommanager.h \
     network/utils/ws_utils.h \
     network/ws/webserver.h

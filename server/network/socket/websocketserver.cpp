@@ -36,12 +36,17 @@ void WebSocketServer::onNewConnection() {
     // Give every Connection an ID and send that ID to Player
     // Player will save that ID, it will act as an authentication Token
     QString playerId = QUuid::createUuid().toString();
-    std::map<std::string, JSONUtils::Value> data{
+    std::map<std::string, JSONUtils::Value> joinConfirmation {
         {"code", 200},
-        {"UUID", playerId.toStdString()},
-        {"message", "Connection established to SocketServer!"}
+        {"UUID", playerId.toStdString()}
     };
-    socket->sendTextMessage(QString::fromStdString(JSONUtils::generateJSON(data)));
+
+    std::map<std::string, JSONUtils::Value> data {
+        {"code", 201},
+        {"UUID", playerId.toStdString()}
+    };
+    socket->sendTextMessage(QString::fromStdString(JSONUtils::generateJSON(joinConfirmation)));
+    broadcast(QString::fromStdString(JSONUtils::generateJSON(data)));
 
     // Connect to the socket's signals
     connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketServer::onTextMessageReceived);

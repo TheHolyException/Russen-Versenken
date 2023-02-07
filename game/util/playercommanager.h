@@ -15,6 +15,11 @@ class PlayerComManager : public QObject
 
 public:
     PlayerComManager(QObject *parent = nullptr);
+    void setUUID(QString &uuid);
+    QString getUUID();
+
+private:
+    QString uuid;
 
 public slots:
     void onTextMessageReceived(const QString &message);
