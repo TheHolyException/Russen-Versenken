@@ -18,8 +18,7 @@ SOURCES += \
         network/utils/mariadb.cpp \
         network/utils/ws_utils.cpp \
         network/ws/webserver.cpp \
-        main.cpp \
-        server.cpp
+        main.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -34,5 +33,4 @@ HEADERS += \
     network/utils/jsonutils.h \
     network/utils/mariadb.h \
     network/utils/ws_utils.h \
-    network/ws/webserver.h \
-    server.h
+    network/ws/webserver.h

@@ -58,6 +58,17 @@ void WebSocketServer::onTextMessageReceived(QString message) {
 
 void WebSocketServer::onBinaryMessageReceived(QByteArray message) {
     qDebug() << "Received binary message of size" << message.size() << "bytes";
+
+    // Send a response back to the client
+    QWebSocket *senderSocket = qobject_cast<QWebSocket *>(sender());
+    if (senderSocket) {
+        std::map<std::string, JSONUtils::Value> data{
+          {"code", 202},
+          {"message", "Received Binary Message!"},
+          {"received_message", message.toStdString()}
+        };
+        senderSocket->sendBinaryMessage(QString::fromStdString(JSONUtils::generateJSON(data)).toUtf8());
+    }
 }
 
 void WebSocketServer::onSocketDisconnected() {
