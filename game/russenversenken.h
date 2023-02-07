@@ -5,6 +5,11 @@
 #include <QPainter>
 #include <QPainterPath>
 #include "math.h"
+#include "util/hexagon.h"
+
+#define RADIUS 50
+#define WIDTH  sqrt(3)*RADIUS;
+#define HEIGHT int(1.5*(float)RADIUS);
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class RussenVersenken; }
@@ -18,12 +23,17 @@ public:
     RussenVersenken(QWidget *parent = nullptr);
     ~RussenVersenken();
     void paintEvent(QPaintEvent *event) override;
-    QList<QPoint> calcualtePoints(int centerX, int centerY,int radius);
-    QPolygon calculatePoly(int x, int y,int radius);
-    QPoint calculateTextPoint(int x, int y,int radius);
+    QPoint calculateTextPoint(int x, int y);
+    Hexagon gridPlayer1[10][10];
+    Hexagon gridPlayer2[10][10];
 
 
 private:
     Ui::RussenVersenken *ui;
+//    std::vector<std::vector<Hexagon>> gridPlayer1;
+//    std::vector<std::vector<Hexagon>> gridPlayer2;
+
+
+    void createGrids();
 };
 #endif // RUSSENVERSENKEN_H
