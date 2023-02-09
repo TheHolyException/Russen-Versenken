@@ -7,10 +7,6 @@
 #include "math.h"
 #include "util/hexagon.h"
 
-#define RADIUS 50
-#define WIDTH  sqrt(3)*RADIUS;
-#define HEIGHT int(1.5*(float)RADIUS);
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class RussenVersenken; }
 QT_END_NAMESPACE
