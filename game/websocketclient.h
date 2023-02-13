@@ -6,8 +6,12 @@
 #include <QAbstractSocket>
 #include <QWebSocket>
 
+#include <chrono>
+#include <thread>
+
 #include "util/playercommanager.h"
 #include "util/jsonutils.h"
+
 
 class WebSocketClient : public QObject
 {
@@ -21,7 +25,8 @@ public:
     }
     void connectToServer(const QUrl &url);
     void sendMessage(const QString &message);
-    void sendPacket(int packetId, QString &payload);
+    void sendPacket(int packetId, const QString &payload);
+    void waitUntilConnected();
 
 signals:
     void connected();
@@ -33,6 +38,7 @@ private slots:
     void onConnected();
     void onDisconnected();
     void onError(QAbstractSocket::SocketError error);
+    void onStatusChanged(QAbstractSocket::SocketState state);
 
 private:
     WebSocketClient(QObject *parent = nullptr);

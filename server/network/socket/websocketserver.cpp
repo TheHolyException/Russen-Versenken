@@ -31,6 +31,7 @@ WebSocketServer& WebSocketServer::getInstance(quint16 port)
 }
 
 void WebSocketServer::onNewConnection() {
+    qDebug() << "New user";
     QWebSocket *socket = m_socketServer.nextPendingConnection();
 
     // Give every Connection an ID and send that ID to Player
@@ -40,20 +41,35 @@ void WebSocketServer::onNewConnection() {
         {"code", 200},
         {"UUID", playerId.toStdString()}
     };
+    socket->sendTextMessage(QString::fromStdString(JSONUtils::generateJSON(joinConfirmation)));
 
     std::map<std::string, JSONUtils::Value> data {
         {"code", 201},
         {"UUID", playerId.toStdString()}
     };
-    socket->sendTextMessage(QString::fromStdString(JSONUtils::generateJSON(joinConfirmation)));
     broadcast(QString::fromStdString(JSONUtils::generateJSON(data)));
 
     // Connect to the socket's signals
     connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketServer::onTextMessageReceived);
     connect(socket, &QWebSocket::binaryMessageReceived, this, &WebSocketServer::onBinaryMessageReceived);
     connect(socket, &QWebSocket::disconnected, this, &WebSocketServer::onSocketDisconnected);
-
     m_sockets.append(socket);
+
+    /*
+     * Test Setup
+     *
+     */
+
+    std::map<std::string, JSONUtils::Value> initPacket {
+        {"code", 101},
+        {"opponent", "RandomDude"}
+    };
+    broadcast(QString::fromStdString(JSONUtils::generateJSON(initPacket)));
+
+
+
+
+
 }
 
 void WebSocketServer::onTextMessageReceived(QString message) {

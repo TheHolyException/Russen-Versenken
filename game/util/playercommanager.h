@@ -17,6 +17,7 @@ public:
     PlayerComManager(QObject *parent = nullptr);
     void setUUID(QString &uuid);
     QString getUUID();
+    void onInit(QJsonObject &message);
 
 private:
     QString uuid;
