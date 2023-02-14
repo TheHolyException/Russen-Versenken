@@ -19,6 +19,7 @@ SOURCES += \
     util/hexagon.cpp \
     util/jsonutils.cpp \
     util/playercommanager.cpp \
+    util/ship.cpp \
     view.cpp \
     websocketclient.cpp
 
@@ -29,6 +30,7 @@ HEADERS += \
     util/jsonutils.h \
     util/hexagon.h \
     util/playercommanager.h \
+    util/ship.h \
     view.h \
     websocketclient.h
 
