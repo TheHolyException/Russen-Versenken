@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include "utils/hexagon.h"
 
 class ServerComManager : public QObject
 {

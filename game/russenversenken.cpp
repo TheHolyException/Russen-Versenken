@@ -12,6 +12,7 @@ RussenVersenken::RussenVersenken(QWidget *parent) : QWidget(parent) , ui(new Ui:
     connect(ui->rbtn3er2,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn4er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn5er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(ReadyClicked()));
 
     createGrid();
 
@@ -31,6 +32,10 @@ RussenVersenken::~RussenVersenken() {
 
 void RussenVersenken::RadioButtonClicked(){
     clickedRadioButton = (QRadioButton*)sender();
+}
+
+void RussenVersenken::ReadyClicked() {
+    WebSocketClient::getInstance().sendGrid(grid);
 }
 
 bool RussenVersenken::PointInPolygon(QPoint point, QPolygon polygon) {

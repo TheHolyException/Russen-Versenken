@@ -10,6 +10,7 @@
 #include "util/hexagon.h"
 #include "qradiobutton.h"
 #include "util/ship.h"
+#include "websocketclient.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class RussenVersenken; }
@@ -51,6 +52,7 @@ public:
 
 public slots:
         void RadioButtonClicked();
+        void ReadyClicked();
 private:
     Ui::RussenVersenken *ui;
     int rotation =0;

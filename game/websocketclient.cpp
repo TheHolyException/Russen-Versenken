@@ -35,7 +35,7 @@ void WebSocketClient::sendPacket(int packetID, const QString &message) {
     std::map<std::string, JSONUtils::Value> data {
         {"code", packetID},
         {"UUID", pmm->getUUID().toStdString()},
-        {"payload", message.toStdString()}
+        {"payload", message.toUtf8().toBase64().toStdString()}
     };
 
     sendMessage(QString::fromStdString(JSONUtils::generateJSON(data)));
@@ -64,4 +64,29 @@ void WebSocketClient::onError(QAbstractSocket::SocketError error)
 
 void WebSocketClient::onStatusChanged(QAbstractSocket::SocketState state) {
     qDebug() << "Status Changed " + (int)state;
+}
+
+PlayerComManager WebSocketClient::getPlayerCommandManager() {
+    return pmm;
+}
+
+void WebSocketClient::sendGrid(Hexagon grid[10][10]) {
+    std::map<std::string, JSONUtils::Value> gridMap;
+    int pos = 0;
+    for (int i = 0; i < 10; i ++) {
+        for (int j = 0; j < 10; j ++) {
+            Hexagon hex = grid[i][j];
+
+            std::map<std::string, JSONUtils::Value> data {
+                {"s",   hex.isShipPart},
+                {"h",   hex.isHit}
+            };
+
+            pos++;
+
+            gridMap.insert({std::to_string(pos) , std::to_string(hex.isShipPart) + "#"+std::to_string(hex.isHit)});
+        }
+    }
+    QString message = QString::fromStdString(JSONUtils::generateJSON(gridMap));
+    sendPacket(151, message);
 }
