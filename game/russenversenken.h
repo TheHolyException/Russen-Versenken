@@ -24,7 +24,7 @@ public:
     ~RussenVersenken();
     void paintEvent(QPaintEvent *event) override;
 
-    Hexagon gridPlayer[10][10];
+    Hexagon grid[10][10];
     Ship ships[SHIPQUANTITY];
     QRadioButton *clickedRadioButton;
 
@@ -34,10 +34,20 @@ public:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent( QKeyEvent * event ) override;
 
-    bool isLegitPosition(int l,int x,int y);
+    bool IsLegitPosition(int l,int x,int y);
+    bool NoShipAround(Ship ship);
+
+    QList<QPoint> GetShipHexagons(Ship ship);
+    QPoint GetLeftNeighbourHexagon(int x, int y, int r);
+    QPoint GetRightNeighbourHexagon(int x, int y, int r);
+
+    void SetShipParts(Ship ship);
+    void ResetShipParts(Ship ship);
+    bool IsNotOverlapping(Ship ship);
+
 
 //debug feature
-//    QPoint calculateTextPoint(int x, int y);
+    QPoint calculateTextPoint(int x, int y);
 
 public slots:
         void RadioButtonClicked();
