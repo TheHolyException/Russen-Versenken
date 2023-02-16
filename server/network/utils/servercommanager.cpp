@@ -25,9 +25,23 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
             qDebug() << payloadData[QString::fromStdString(std::to_string(i))];
         }
 
+        break;       
+    }
+    case 501: {// Receive Player Name
+        qDebug() << payloadData;
+
+        RussenVersenken_Server &rserver =RussenVersenken_Server::getInstance();
+
+        if(uuid == rserver.player1.uuid){
+            rserver.player1.name=payloadData["name"].toString();
+        }else{
+            rserver.player2.name=payloadData["name"].toString();
+        }
+        qDebug() << rserver.player1.name;
+        RussenVersenken_Server &rserver2 =RussenVersenken_Server::getInstance();
+          qDebug() << rserver2.player1.name;
         break;
     }
-
     default:
         qDebug() << "Unknown Packet -> " + message;
         break;
