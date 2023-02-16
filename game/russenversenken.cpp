@@ -14,6 +14,7 @@ RussenVersenken::RussenVersenken(QWidget *parent) : QWidget(parent) , ui(new Ui:
     connect(ui->rbtn5er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->pbtnPhase,SIGNAL(clicked()), this, SLOT(PhaseButtonClicked()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(ReadyClicked()));
+    connect(ui->pbtnPlayerName, SIGNAL(clicked()), this, SLOT(NameClicked()));
 
     createGrid();
 
@@ -37,6 +38,11 @@ void RussenVersenken::RadioButtonClicked(){
 
 void RussenVersenken::ReadyClicked() {
     WebSocketClient::getInstance().sendGrid(grid);
+}
+void RussenVersenken::NameClicked() {
+   ui->label->setText(ui->lEditPlayerName->text());
+   //ui->nameFrame->setEnabled(false);
+   ui->nameFrame->close();
 }
 
 void RussenVersenken::PhaseButtonClicked(){

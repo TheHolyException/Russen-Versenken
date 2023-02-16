@@ -26,7 +26,8 @@
    <string>RussenVersenken</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255,255,255)</string>
+   <string notr="true">background-color: rgb(255,255,255);
+color:black</string>
   </property>
   <widget class="QRadioButton" name="rbtn2er">
    <property name="geometry">
@@ -197,6 +198,69 @@ background-color: rgb(0,0,0)</string>
    <property name="text">
     <string>Ready</string>
    </property>
+  </widget>
+  <widget class="QFrame" name="nameFrame">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>400</y>
+     <width>400</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:gray
+
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="pbtnPlayerName">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>70</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:gray</string>
+    </property>
+    <property name="text">
+     <string>OK</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lEditPlayerName">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>40</y>
+      <width>200</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>10</y>
+      <width>120</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:black</string>
+    </property>
+    <property name="text">
+     <string>Wie lautet dein Name?</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

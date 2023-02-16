@@ -55,6 +55,7 @@ public slots:
         void RadioButtonClicked();
         void PhaseButtonClicked();
         void ReadyClicked();
+        void NameClicked();
 private:
     Ui::RussenVersenken *ui;
     int rotation =0;
