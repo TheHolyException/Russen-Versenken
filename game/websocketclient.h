@@ -20,9 +20,11 @@ class WebSocketClient : public QObject
 
 public:
     static WebSocketClient& getInstance()
-    {
-        static WebSocketClient instance;
-        return instance;
+    {   
+        if (!m_instance) {
+               m_instance = new WebSocketClient();
+             }
+        return *m_instance;
     }
     void connectToServer(const QUrl &url);
     void sendMessage(const QString &message);
@@ -48,6 +50,8 @@ private:
     WebSocketClient(QObject *parent = nullptr);
     ~WebSocketClient();
     Q_DISABLE_COPY(WebSocketClient)
+
+    inline static WebSocketClient *m_instance=nullptr;
 
     QWebSocket *m_webSocket;
     PlayerComManager *pmm;

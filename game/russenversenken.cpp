@@ -43,6 +43,8 @@ void RussenVersenken::NameClicked() {
    ui->label->setText(ui->lEditPlayerName->text());
    //ui->nameFrame->setEnabled(false);
    ui->nameFrame->close();
+
+   WebSocketClient::getInstance().sendPacket(501,"{\"name\":\"" + ui->lEditPlayerName->text() + "\"}");
 }
 
 void RussenVersenken::PhaseButtonClicked(){

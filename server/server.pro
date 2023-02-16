@@ -23,7 +23,7 @@ SOURCES += \
         russenversenken_server.cpp \
         utils/hexagon.cpp \
         utils/player.cpp  \
-        utils/player.cpp  \
+
         
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -43,4 +43,4 @@ HEADERS += \
     russenversenken_server.h \
     utils/hexagon.h \
     utils/player.h  \
-    utils/player.h  \
+
