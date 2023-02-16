@@ -10,7 +10,7 @@
 #include <QUuid>
 
 #include "../utils/jsonutils.h"
-#include "../utils/servercommanager.h""
+#include "../utils/servercommanager.h"
 
 /**
  * @class WebSocketServer
