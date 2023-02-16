@@ -27,6 +27,8 @@ public:
     Hexagon grid[10][10];
     Ship ships[SHIPQUANTITY];
     QRadioButton *clickedRadioButton;
+    int phase=0;
+    bool isPlayersTurn=true;
 
     bool PointInPolygon(QPoint point, QPolygon polygon);
     void ClickedHexagon(int &x,int &y, QPoint pos);
@@ -35,7 +37,6 @@ public:
     void keyPressEvent( QKeyEvent * event ) override;
 
     bool IsLegitPosition(int l,int x,int y);
-    bool NoShipAround(Ship ship);
 
     QList<QPoint> GetShipHexagons(Ship ship);
     QPoint GetLeftNeighbourHexagon(int x, int y, int r);
@@ -51,6 +52,7 @@ public:
 
 public slots:
         void RadioButtonClicked();
+        void PhaseButtonClicked();
 private:
     Ui::RussenVersenken *ui;
     int rotation =0;

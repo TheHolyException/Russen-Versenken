@@ -12,6 +12,7 @@ RussenVersenken::RussenVersenken(QWidget *parent) : QWidget(parent) , ui(new Ui:
     connect(ui->rbtn3er2,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn4er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn5er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
+    connect(ui->pbtnPhase,SIGNAL(clicked()), this, SLOT(PhaseButtonClicked()));
 
     createGrid();
 
@@ -31,6 +32,14 @@ RussenVersenken::~RussenVersenken() {
 
 void RussenVersenken::RadioButtonClicked(){
     clickedRadioButton = (QRadioButton*)sender();
+}
+
+void RussenVersenken::PhaseButtonClicked(){
+    if(phase==2){
+        phase=0;
+    }else{
+        phase+=1;
+    }
 }
 
 bool RussenVersenken::PointInPolygon(QPoint point, QPolygon polygon) {
@@ -193,14 +202,6 @@ bool RussenVersenken::IsLegitPosition(int l,int x,int y ){
     return false;
 }
 
-bool RussenVersenken::NoShipAround(Ship ship){
-
- QList<QPoint> hexagons = GetShipHexagons(ship);
-
-
-
-    return true;
-}
 
 void RussenVersenken::SetShipParts(Ship ship){
      QList<QPoint> hexagons=GetShipHexagons(ship);
@@ -241,7 +242,7 @@ QList<QPoint> RussenVersenken::GetShipHexagons(Ship ship){
             hexagons.append(tempP3);
             if(ship.length>=4){
                 hexagons.append(GetLeftNeighbourHexagon(tempP2.x(),tempP2.y(),ship.rotation));
-                if(ship.length>5){
+                if(ship.length>=5){
                      hexagons.append(GetRightNeighbourHexagon(tempP3.x(),tempP3.y(),ship.rotation));
                 }
             }
@@ -304,7 +305,8 @@ QPoint RussenVersenken::GetRightNeighbourHexagon(int x, int y, int r){
 }
 
 void RussenVersenken::keyPressEvent( QKeyEvent * event ){
-    if( event->key() == Qt::Key_R )
+
+    if(phase==1 && event->key() == Qt::Key_R )
     {
         if(rotation!=2){
             rotation+=1;
@@ -316,6 +318,7 @@ void RussenVersenken::keyPressEvent( QKeyEvent * event ){
 }
 
 void RussenVersenken::mouseReleaseEvent(QMouseEvent *event){
+
 
     int leftX = grid[0][0].hexagon.toPolygon().point(3).x();
     int rigthX = grid[9][9].hexagon.toPolygon().point(0).x();
@@ -329,40 +332,50 @@ void RussenVersenken::mouseReleaseEvent(QMouseEvent *event){
 
         if(x>=0 && y>=0){
 
-            int l = 0;
-            int shipCount=0;
+            if(phase==1){
+                int l = 0;
+                int shipCount=0;
 
-            if(clickedRadioButton->objectName()=="rbtn2er"){
-                shipCount=0;
-                l=2;
-            }else if(clickedRadioButton->objectName()=="rbtn3er"){
-                shipCount=1;
-                l=3;
-            }else if(clickedRadioButton->objectName()=="rbtn3er2"){
-                shipCount=2;
-                l=3;
-            }else if(clickedRadioButton->objectName()=="rbtn4er"){
-                shipCount=3;
-                l=4;
-            }else if(clickedRadioButton->objectName()=="rbtn5er"){
-                shipCount=4;
-                l=5;
-            }
+                if(clickedRadioButton->objectName()=="rbtn2er"){
+                    shipCount=0;
+                    l=2;
+                }else if(clickedRadioButton->objectName()=="rbtn3er"){
+                    shipCount=1;
+                    l=3;
+                }else if(clickedRadioButton->objectName()=="rbtn3er2"){
+                    shipCount=2;
+                    l=3;
+                }else if(clickedRadioButton->objectName()=="rbtn4er"){
+                    shipCount=3;
+                    l=4;
+                }else if(clickedRadioButton->objectName()=="rbtn5er"){
+                    shipCount=4;
+                    l=5;
+                }
 
-            if(!IsLegitPosition(l,x,y)){
-                return;
-            }
+                if(!IsLegitPosition(l,x,y)){
+                    return;
+                }
 
-            Ship ship = Ship(l,x,y,rotation);
+                Ship ship = Ship(l,x,y,rotation);
 
-            if(IsNotOverlapping(ship)){
-                ResetShipParts(ships[shipCount]);
+                if(IsNotOverlapping(ship)){
+                    ResetShipParts(ships[shipCount]);
 
-                ships[shipCount]=ship;
-                SetShipParts(ship);
+                    ships[shipCount]=ship;
+                    SetShipParts(ship);
+                }
+            }else if(phase==2 && isPlayersTurn){
+                if(!grid[x-1][y-1].isHit){
+                    grid[x-1][y-1].isHit=true;
+//                    isPlayersTurn=false;
+                }else{
+
+                }
             }
         }
-    }   
+
+    }
 
    // qDebug() << event->pos();
     this->update();
@@ -406,7 +419,7 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
     painter.eraseRect(0,0,1280,1024);
 
 //---------------------------------------------------------------------
-// drawing Hexagon Grid
+// drawing Hexagon Grid and Hits
 //---------------------------------------------------------------------
 
     for (int i = 1; i <= 10; i++) {
@@ -422,7 +435,6 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
             //debug feature end
 
             painter.drawPolygon(grid[i-1][j-1].hexagon);
-
         }
     }
 
@@ -521,6 +533,37 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
 
             painter.restore();
 
+        }
+
+//---------------------------------------------------------------------
+//drawing Hits
+//---------------------------------------------------------------------
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+
+                if(grid[i-1][j-1].isHit){
+
+                    QPoint line1Point1=grid[i-1][j-1].hexagon.toPolygon().point(0);
+                    QPoint line1Point2=grid[i-1][j-1].hexagon.toPolygon().point(3);
+                    QPoint line2Point1=grid[i-1][j-1].hexagon.toPolygon().point(1);
+                    QPoint line2Point2=grid[i-1][j-1].hexagon.toPolygon().point(4);
+                    QPen crossPen;
+                    crossPen.setWidth(5);
+
+                    if(grid[i-1][j-1].isShipPart){
+                        crossPen.setColor(Qt::red);
+
+                    }else{
+                        crossPen.setColor(Qt::gray);
+                    }
+
+                    painter.save();
+                    painter.setPen(crossPen);
+                    painter.drawLine(line1Point1,line1Point2);
+                    painter.drawLine(line2Point1,line2Point2);
+                    painter.restore();
+                }
+            }
         }
     }
 }
