@@ -11,6 +11,7 @@
 
 #include "util/playercommanager.h"
 #include "util/jsonutils.h"
+#include "util/hexagon.h"
 
 
 class WebSocketClient : public QObject
@@ -27,6 +28,9 @@ public:
     void sendMessage(const QString &message);
     void sendPacket(int packetId, const QString &payload);
     void waitUntilConnected();
+    PlayerComManager getPlayerCommandManager();
+    void sendGrid(Hexagon grid[10][10]);
+
 
 signals:
     void connected();

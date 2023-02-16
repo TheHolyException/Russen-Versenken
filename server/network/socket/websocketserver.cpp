@@ -11,6 +11,7 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent) :
     }
 
     m_instance = this;
+    scm = new ServerComManager();
 
     qDebug() << "WebSocket server listening on port" << m_socketServer.serverPort();
     connect(&m_socketServer, &QWebSocketServer::newConnection, this, &WebSocketServer::onNewConnection);
@@ -67,13 +68,11 @@ void WebSocketServer::onNewConnection() {
     broadcast(QString::fromStdString(JSONUtils::generateJSON(initPacket)));
 
 
-
-
-
 }
 
 void WebSocketServer::onTextMessageReceived(QString message) {
     qDebug() << "Received message " << message;
+    scm->onTextMessageReceived(message);
     // This method has been deprecated.
 }
 

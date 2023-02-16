@@ -21,9 +21,9 @@ SOURCES += \
         network/ws/webserver.cpp \
         main.cpp \
         russenversenken_server.cpp \
-        util/hexagon.cpp \
-        util/player.cpp
-
+        utils/hexagon.cpp
+        utils/player.cpp
+        
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -40,5 +40,5 @@ HEADERS += \
     network/utils/ws_utils.h \
     network/ws/webserver.h \
     russenversenken_server.h \
-    util/hexagon.h \
-    util/player.h
+    utils/hexagon.h
+    utils/player.h

@@ -10,6 +10,7 @@
 #include <QUuid>
 
 #include "../utils/jsonutils.h"
+#include "../utils/servercommanager.h""
 
 /**
  * @class WebSocketServer
@@ -37,6 +38,7 @@ public:
 
     // Add Docs
     ~WebSocketServer();
+    ServerComManager getServerCommandManager();
 
     /**
      * @brief Broadcasts a message to all connected clients.
@@ -77,6 +79,7 @@ private:
      * It is used to listen for new connections, and to manage the list of connected sockets.
      */
     QWebSocketServer m_socketServer;
+    ServerComManager *scm;
 
     /**
      * @brief List of connected sockets
