@@ -14,6 +14,7 @@ RussenVersenken::RussenVersenken(QWidget *parent) : QWidget(parent) , ui(new Ui:
     connect(ui->rbtn5er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->pbtnPhase,SIGNAL(clicked()), this, SLOT(PhaseButtonClicked()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(ReadyClicked()));
+    connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(SendClicked()));
 
     createGrid();
 
@@ -45,6 +46,13 @@ void RussenVersenken::PhaseButtonClicked(){
     }else{
         phase+=1;
     }
+}
+
+void RussenVersenken::SendClicked(){
+
+    ui->chat->insertPlainText("Du: "+ui->sendText->text()+"\n");
+    ui->chat->verticalScrollBar()->setValue(ui->chat->verticalScrollBar()->maximum());
+
 }
 
 bool RussenVersenken::PointInPolygon(QPoint point, QPolygon polygon) {
@@ -330,6 +338,7 @@ void RussenVersenken::mouseReleaseEvent(QMouseEvent *event){
     int topY = grid[0][0].hexagon.toPolygon().point(5).y();
     int bottomY = grid[9][9].hexagon.toPolygon().point(2).y();
     QRect rect = QRect(QPoint(leftX,topY),QPoint(rigthX,bottomY));
+   // qDebug()<<event->pos();
     if(rect.contains(event->pos())){
         int x = -1;
         int y = -1;
@@ -473,7 +482,7 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
     brush.setColor(Qt::black);
     brush.setStyle(Qt::SolidPattern);
 
-    painter.translate(1100 , 340);
+    painter.translate(1125 , 340);
     switch (rotation) {
     case 0:
         painter.rotate(0.0);

@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>1024</height>
+    <height>850</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1280</width>
-    <height>1024</height>
+    <height>850</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>1024</height>
+    <height>850</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,130 +28,11 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255,255,255)</string>
   </property>
-  <widget class="QRadioButton" name="rbtn2er">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>80</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255,255,255);
-background-color: rgb(0,0,0)</string>
-   </property>
-   <property name="text">
-    <string>2er                                                                          </string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>16</width>
-     <height>16</height>
-    </size>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbtn3er">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>120</y>
-     <width>150</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255,255,255);
-background-color: rgb(0,0,0)</string>
-   </property>
-   <property name="text">
-    <string>3er                                                                       </string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbtn4er">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>200</y>
-     <width>200</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255,255,255);
-background-color: rgb(0,0,0)</string>
-   </property>
-   <property name="text">
-    <string>4er                                                                         </string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbtn5er">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>240</y>
-     <width>250</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255,255,255);
-background-color: rgb(0,0,0)</string>
-   </property>
-   <property name="text">
-    <string>5er                                                               </string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbtn3er2">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>160</y>
-     <width>150</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255,255,255);
-background-color: rgb(0,0,0)</string>
-   </property>
-   <property name="text">
-    <string>3er                                                                       </string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbtnPhase">
    <property name="geometry">
     <rect>
      <x>1075</x>
-     <y>810</y>
+     <y>800</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -185,16 +66,201 @@ background-color: rgb(0,0,0)</string>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>1170</x>
-     <y>970</y>
+     <x>1160</x>
+     <y>800</y>
      <width>80</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: grey</string>
    </property>
    <property name="text">
     <string>Ready</string>
    </property>
   </widget>
+  <widget class="QTextEdit" name="chat">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>420</y>
+     <width>271</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>770</y>
+     <width>271</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLineEdit" name="sendText"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="sendButton">
+      <property name="text">
+       <string>Send</string>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>50</y>
+     <width>271</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0,0,0,0)</string>
+   </property>
+   <property name="title">
+    <string>Schiffe</string>
+   </property>
+   <widget class="QRadioButton" name="rbtn3er2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255,255,255);
+background-color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>3er                                                                       </string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rbtn2er">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255,255,255);
+background-color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>2er                                                                          </string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
+     </size>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rbtn3er">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255,255,255);
+background-color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>3er                                                                       </string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rbtn5er">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>250</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255,255,255);
+background-color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>5er                                                               </string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rbtn4er">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>200</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255,255,255);
+background-color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>4er                                                                         </string>
+    </property>
+   </widget>
+  </widget>
+  <zorder>groupBox</zorder>
+  <zorder>pbtnPhase</zorder>
+  <zorder>label</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>chat</zorder>
+  <zorder>layoutWidget</zorder>
  </widget>
  <resources/>
  <connections/>
