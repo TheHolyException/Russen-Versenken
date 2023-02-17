@@ -2,7 +2,9 @@
 
 RussenVersenken_Server::RussenVersenken_Server()
 {
-
+    player1 = Player();
+    player2 = Player();;
+    phase =0;
 }
 
 void RussenVersenken_Server::sendGrid(Hexagon grid[10][10], Player *player) {
