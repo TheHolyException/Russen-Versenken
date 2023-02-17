@@ -37,6 +37,13 @@ void PlayerComManager::onTextMessageReceived(const QString &message) {
         qDebug() << "New player joined: " + data["UUID"].toString();
         r.addChatmessage("Neuer Spieler beigetreten!\n");
         break;
+    case 301: {// phase change
+
+        QString m =QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded;
+        r.phase = m.toInt();
+
+        break;
+    }
     case 602: {// Chat message received
 
         QString m =QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded;
