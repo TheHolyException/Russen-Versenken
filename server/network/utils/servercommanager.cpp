@@ -8,13 +8,22 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
     QJsonDocument document = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject data = document.object();
 
+    RussenVersenken_Server &rServer =RussenVersenken_Server::getInstance();
+
     QString uuid = data["UUID"].toString();
     qDebug() << data["code"].toInt();
+    Player *player=nullptr;
+    if(uuid == rServer.player1.uuid){
+        player = &rServer.player1;
+
+    }else if(uuid == rServer.player2.uuid){
+        player = &rServer.player2;
+    }
 
     QJsonDocument payloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded);
     QJsonObject payloadData = payloadDoc.object();
 
-    RussenVersenken_Server &rServer =RussenVersenken_Server::getInstance();
+
 
     switch (data["code"].toInt()) {
 
@@ -28,6 +37,7 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
             QStringList datas = payloadData[QString::fromStdString(std::to_string(i))].toString().split("#");
             hex.isShipPart = datas.at(0) == "0" ? false : true;
             hex.isHit      = datas.at(1) == "0" ? false : true;
+            player->grid[i%10][i/10] = hex;
         }
 
         break;       
@@ -50,10 +60,10 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
         qDebug() << payloadData;
 
 
-        if(uuid == rServer.player1.uuid){
+        if(uuid == rServer.player1.uuid && rServer.player2.uuid!=""){
             QString m = rServer.player1.name +": "+payloadData["ChatNachricht"].toString();
             rServer.player2.sendPacket(602,m);
-        }else if(uuid == rServer.player2.uuid){
+        }else if(uuid == rServer.player2.uuid && rServer.player1.uuid!=""){
             QString m = rServer.player2.name +": "+payloadData["ChatNachricht"].toString();
             rServer.player1.sendPacket(602,m);
         }
