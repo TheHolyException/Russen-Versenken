@@ -42,6 +42,24 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
           qDebug() << rserver2.player1.name;
         break;
     }
+    case 601: {// Receive Chatmessage
+        qDebug() << payloadData;
+
+        RussenVersenken_Server &rserver =RussenVersenken_Server::getInstance();
+
+
+        if(uuid == rserver.player1.uuid){
+            QString m = rserver.player1.name +": "+payloadData["ChatNachricht"].toString();
+            rserver.player2.sendPacket(602,m);
+        }else{
+            QString m = rserver.player2.name +": "+payloadData["ChatNachricht"].toString();
+            rserver.player1.sendPacket(602,m);
+        }
+        qDebug() << rserver.player1.name;
+        RussenVersenken_Server &rserver2 =RussenVersenken_Server::getInstance();
+          qDebug() << rserver2.player1.name;
+        break;
+    }
     default:
         qDebug() << "Unknown Packet -> " + message;
         break;

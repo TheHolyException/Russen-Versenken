@@ -60,7 +60,14 @@ void RussenVersenken::SendClicked(){
 
     ui->chat->insertPlainText("Du: "+ui->sendText->text()+"\n");
     ui->chat->verticalScrollBar()->setValue(ui->chat->verticalScrollBar()->maximum());
+    WebSocketClient::getInstance().sendPacket(601,"{\"ChatNachricht\":\"" + ui->sendText->text() + "\"}");
 
+    ui->sendText->setText("");
+
+}
+
+void RussenVersenken::addChatmessage(QString m) {
+    ui->chat->insertPlainText(m);
 }
 
 bool RussenVersenken::PointInPolygon(QPoint point, QPolygon polygon) {

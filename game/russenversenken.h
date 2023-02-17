@@ -13,7 +13,6 @@
 #include "util/ship.h"
 #include "websocketclient.h"
 
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class RussenVersenken; }
 QT_END_NAMESPACE
@@ -23,7 +22,15 @@ class RussenVersenken : public QWidget
     Q_OBJECT
 
 public:
-    RussenVersenken(QWidget *parent = nullptr);
+    static RussenVersenken& getInstance()
+    {
+
+        if (!m_instance) {
+           m_instance = new RussenVersenken();
+        }
+        return *m_instance;
+    }
+
     ~RussenVersenken();
     void paintEvent(QPaintEvent *event) override;
 
@@ -32,6 +39,7 @@ public:
     QRadioButton *clickedRadioButton;
     int phase=0;
     bool isPlayersTurn=true;
+    Ui::RussenVersenken *ui;
 
     bool PointInPolygon(QPoint point, QPolygon polygon);
     void ClickedHexagon(int &x,int &y, QPoint pos);
@@ -49,6 +57,7 @@ public:
     void ResetShipParts(Ship ship);
     bool IsNotOverlapping(Ship ship);
 
+    void addChatmessage(QString m);
 
 //debug feature
     QPoint calculateTextPoint(int x, int y);
@@ -60,8 +69,10 @@ public slots:
         void SendClicked();
         void NameClicked();
 private:
-    Ui::RussenVersenken *ui;
+    RussenVersenken(QWidget *parent = nullptr);
+
     int rotation =0;
+    inline static RussenVersenken *m_instance;
 //    std::vector<std::vector<Hexagon>> gridPlayer1;
 //    std::vector<std::vector<Hexagon>> gridPlayer2;
 

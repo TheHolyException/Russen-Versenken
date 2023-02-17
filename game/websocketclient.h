@@ -14,6 +14,7 @@
 #include "util/hexagon.h"
 
 
+
 class WebSocketClient : public QObject
 {
     Q_OBJECT

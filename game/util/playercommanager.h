@@ -13,6 +13,7 @@ class PlayerComManager : public QObject
 {
     Q_OBJECT
 
+
 public:
     PlayerComManager(QObject *parent = nullptr);
     void setUUID(QString &uuid);

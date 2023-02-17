@@ -43,8 +43,10 @@ void WebSocketServer::onNewConnection() {
 
     if( rserver.player1.uuid==""){
         rserver.player1.uuid=playerId;
+        rserver.player1.webSocket=socket;
     }else{
         rserver.player2.uuid=playerId;
+        rserver.player2.webSocket=socket;
     }
 
     std::map<std::string, JSONUtils::Value> joinConfirmation {
