@@ -32,7 +32,6 @@ public:
     void sendPacket(int packetId, const QString &payload);
     void waitUntilConnected();
     PlayerComManager getPlayerCommandManager();
-    void sendGrid(Hexagon grid[10][10]);
 
 
 signals:

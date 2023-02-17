@@ -22,6 +22,9 @@ void PlayerComManager::onTextMessageReceived(const QString &message) {
 
     RussenVersenken &r = RussenVersenken::getInstance();
 
+    QJsonDocument payloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded);
+    QJsonObject payloadData = payloadDoc.object();
+
     switch (data["code"].toInt()) {
     case 101: // Init game Lobby
         this->onInit(data);
@@ -29,6 +32,18 @@ void PlayerComManager::onTextMessageReceived(const QString &message) {
     case 111: // Init game
 
         break;
+    case 151: {// Receive Grid Data
+        qDebug() << payloadData;
+
+        for (int i = 0; i < 100; i ++) {
+            QStringList datas = payloadData[QString::fromStdString(std::to_string(i))].toString().split("#");
+            r.grid[i%10][i/10].isShipPart = datas.at(0) == "0" ? false : true;
+            r.grid[i%10][i/10].isHit      = datas.at(1) == "0" ? false : true;
+        }
+        r.update();
+
+        break;
+    }
     case 200: // Response to self Joined
         this->uuid = data["UUID"].toString();
         break;

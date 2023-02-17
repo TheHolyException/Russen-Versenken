@@ -5,7 +5,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "russenversenken_server.h"
-#include "utils/hexagon.h"
 
 class ServerComManager : public QObject
 {

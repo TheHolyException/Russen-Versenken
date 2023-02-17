@@ -70,16 +70,3 @@ PlayerComManager WebSocketClient::getPlayerCommandManager() {
     return pmm;
 }
 
-void WebSocketClient::sendGrid(Hexagon grid[10][10]) {
-    std::map<std::string, JSONUtils::Value> gridMap;
-    int pos = 0;
-    for (int i = 0; i < 10; i ++) {
-        for (int j = 0; j < 10; j ++) {
-            Hexagon hex = grid[j][i];
-            gridMap.insert({std::to_string(pos) , std::to_string(hex.isShipPart) + "#"+std::to_string(hex.isHit)});
-            pos++;
-        }
-    }
-    QString message = QString::fromStdString(JSONUtils::generateJSON(gridMap));
-    sendPacket(151, message);
-}

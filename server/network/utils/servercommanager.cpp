@@ -21,11 +21,11 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
         Hexagon grid[10][10];
 
         for (int i = 0; i < 100; i ++) {
-            qDebug() << payloadData[QString::fromStdString(std::to_string(i))].toString();
             Hexagon hex;
             QStringList datas = payloadData[QString::fromStdString(std::to_string(i))].toString().split("#");
             hex.isShipPart = datas.at(0) == "0" ? false : true;
             hex.isHit      = datas.at(1) == "0" ? false : true;
+            grid[i%10][i/10] = hex;
         }
 
         break;       

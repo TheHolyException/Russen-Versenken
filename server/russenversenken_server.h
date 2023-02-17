@@ -19,6 +19,8 @@ public:
     Player player1;
     Player player2;
     int phase;
+
+    void sendGrid(Hexagon grid[10][10], Player *player);
 private:
     RussenVersenken_Server();
     inline static RussenVersenken_Server *m_instance;

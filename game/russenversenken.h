@@ -58,6 +58,7 @@ public:
     bool IsNotOverlapping(Ship ship);
 
     void addChatmessage(QString m);
+    void sendGrid();
 
 //debug feature
     QPoint calculateTextPoint(int x, int y);
