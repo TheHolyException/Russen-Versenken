@@ -20,3 +20,16 @@ void RussenVersenken_Server::sendGrid(Hexagon grid[10][10], Player *player) {
     QString message = QString::fromStdString(JSONUtils::generateJSON(gridMap));
     player->sendPacket(151, message);
 }
+
+bool RussenVersenken_Server::AreAllShipsDown(Hexagon grid[10][10]){
+
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            if(grid[i][j].isShipPart && !grid[i][j].isHit){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
