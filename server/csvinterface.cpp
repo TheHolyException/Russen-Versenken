@@ -2,18 +2,7 @@
 #include "qdebug.h"
 
 
-CSVInterface::CSVInterface() {
-}
-
-/*
-std::ofstream dbMatch;
-std::ofstream dbPlayer;
-std::ofstream dbTurns;
-*/
-
-//std::string dbMatchPath = "./db/match.csv";
-//std::string dbPlayersPath = "./db/players.csv";
-//std::string dbTurnsPath = "./db/turns.csv";
+CSVInterface::CSVInterface() {}
 
 
 QFile playersDB("./db/players.csv");
@@ -27,7 +16,7 @@ void CSVInterface::init() {
 }
 
 void CSVInterface::afterTurn(int turnno, int matchid, int playerid, int fieldno) {
-
+    // Writing the turn information to the turns.csv
     if (turnsDB.open(QIODevice::WriteOnly)) {
         QTextStream os(&turnsDB);
         os << "\n" + QString::number(turnno) +
@@ -42,8 +31,7 @@ void CSVInterface::afterTurn(int turnno, int matchid, int playerid, int fieldno)
 
 void CSVInterface::afterMatch(int playerid1, int playerid2,
                               int winnerid, long matchTime) {
-
-
+    // Writing matchdata to the match.csv
     if (matchDB.open(QIODevice::Append)) {
         QTextStream os(&matchDB);
         os << ""   + QString::number(playerid1) +
@@ -57,10 +45,12 @@ void CSVInterface::afterMatch(int playerid1, int playerid2,
 
 
     QString playerDataRaw = "id,name,totalPlays,totalWins\n";
+    // Reading all Playerdatas and increment the 'totalPlayed' count for every
+    // Player played in this Match
+    // also increment the 'totalWins' for the winner
     if (playersDB.open(QIODevice::ReadOnly)) {
         qDebug() << "Reading";
         QTextStream is(&playersDB);
-
         is.readLine(); // read first line to skip the header
         while(!is.atEnd()) {
             //qDebug() << is.readLine();v
@@ -85,8 +75,8 @@ void CSVInterface::afterMatch(int playerid1, int playerid2,
         playersDB.close();
     }
 
+    // Rewriting the playerdatabase with the modified dataset
     if (playersDB.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        qDebug() << "p1";
         QTextStream os(&playersDB);
         os << playerDataRaw;
         os.flush();

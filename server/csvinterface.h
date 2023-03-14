@@ -7,8 +7,9 @@
 #include <QFile>
 
 class CSVInterface : public QObject {
-public:
+private:
     CSVInterface();
+public:
     static void init();
     static void debug();
     static void afterTurn(int turnno, int matchid, int playerid, int fieldno);
