@@ -24,7 +24,6 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
 
         while (!is.atEnd()) {
             QString line = is.readLine();
-            qDebug() << "asdf " << line;
             if (line.startsWith('#')) continue; // Skipping Header
 
             QStringList lineData = line.split(',');
@@ -36,11 +35,8 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
         turnsDB.close();
     }
 
-    qDebug() << lastTurn;
-    qDebug() << turnDataRaw;
-
     turnDataRaw +=
-            "" + QString::number(lastTurn+=1) +
+            "" + QString::number(++lastTurn) +
             ","  + QString::number(matchid) +
             ","  + QString::number(playerid) +
             ","  + QString::number(fieldno) + "\n";
@@ -75,7 +71,6 @@ void CSVInterface::afterMatch(int playerid1, int playerid2,
     // Player played in this Match
     // also increment the 'totalWins' for the winner
     if (playersDB.open(QIODevice::ReadOnly)) {
-        qDebug() << "Reading";
         QTextStream is(&playersDB);
         is.readLine(); // read first line to skip the header
         while(!is.atEnd()) {

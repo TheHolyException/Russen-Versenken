@@ -11,7 +11,6 @@ CONFIG -= app_bundle
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    csvinterface.cpp \
         network/routes/httptestroute.cpp \
         network/routes/jsontestroute.cpp \
         network/socket/websocketserver.cpp \
@@ -22,6 +21,7 @@ SOURCES += \
         network/ws/webserver.cpp \
         main.cpp \
         russenversenken_server.cpp \
+		utils/csvinterface.cpp \
         utils/hexagon.cpp \
         utils/player.cpp  \
 
@@ -32,7 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    csvinterface.h \
     network/routes/httptestroute.h \
     network/routes/iroutehandler.h \
     network/routes/jsontestroute.h \
@@ -43,6 +42,7 @@ HEADERS += \
     network/utils/ws_utils.h \
     network/ws/webserver.h \
     russenversenken_server.h \
+    utils/csvinterface.h \
     utils/hexagon.h \
     utils/player.h  \
 
