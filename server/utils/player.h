@@ -16,6 +16,8 @@ public:
     Hexagon grid[10][10];
     QWebSocket *webSocket;
 
+    bool isReady;
+
     void sendPacket(int packet, QString &message);
 };
 
