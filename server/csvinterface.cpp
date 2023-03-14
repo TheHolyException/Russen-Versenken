@@ -9,20 +9,46 @@ QFile playersDB("./db/players.csv");
 QFile matchDB("./db/match.csv");
 QFile turnsDB("./db/turns.csv");
 
-void CSVInterface::init() {
-    //dbMatch.open("./db/matchs.csv");
-    //dbPlayer.open("./db/players.csv");
-    //dbTurns.open("./db/turns.csv");
-}
+/**
+ * @brief CSVInterface::afterTurn should be executed after every turn to save all informations in the csv
+ * @param matchid   ID of the Match
+ * @param playerid  ID of the player
+ * @param fieldno   Fieldnumber
+ */
+void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
+    int lastTurn = -1;
+    QString turnDataRaw = "#turnno,matchid,playerid,fieldno\n";
+    if (turnsDB.open(QIODevice::ReadOnly)) {
+        QTextStream is(&turnsDB);
+        //is.readLine();
 
-void CSVInterface::afterTurn(int turnno, int matchid, int playerid, int fieldno) {
+        while (!is.atEnd()) {
+            QString line = is.readLine();
+            qDebug() << "asdf " << line;
+            if (line.startsWith('#')) continue; // Skipping Header
+
+            QStringList lineData = line.split(',');
+            if (lineData.at(1).toInt() == matchid )
+                lastTurn = lineData.at(0).toInt();
+
+            turnDataRaw += line+"\n";
+        }
+        turnsDB.close();
+    }
+
+    qDebug() << lastTurn;
+    qDebug() << turnDataRaw;
+
+    turnDataRaw +=
+            "" + QString::number(lastTurn+=1) +
+            ","  + QString::number(matchid) +
+            ","  + QString::number(playerid) +
+            ","  + QString::number(fieldno) + "\n";
+
     // Writing the turn information to the turns.csv
     if (turnsDB.open(QIODevice::WriteOnly)) {
         QTextStream os(&turnsDB);
-        os << "\n" + QString::number(turnno) +
-              ","  + QString::number(matchid) +
-              ","  + QString::number(playerid) +
-              ","  + QString::number(fieldno);
+        os << turnDataRaw;
         os.flush();
         turnsDB.close();
     }
@@ -44,7 +70,7 @@ void CSVInterface::afterMatch(int playerid1, int playerid2,
 
 
 
-    QString playerDataRaw = "id,name,totalPlays,totalWins\n";
+    QString playerDataRaw = "#id,name,totalPlays,totalWins\n";
     // Reading all Playerdatas and increment the 'totalPlayed' count for every
     // Player played in this Match
     // also increment the 'totalWins' for the winner
@@ -83,18 +109,4 @@ void CSVInterface::afterMatch(int playerid1, int playerid2,
         playersDB.close();
     }
 }
-
-
-
-
-void CSVInterface::debug() {
-    std::ofstream out;
-    //out.open("C:\\Users\\Patrick\\Documents\\Git\\Russen-Versenken\\server\\database.csv");
-    out.open("./data.csv");
-    out.write("asdf", 4);
-    out.flush();
-    //qDebug() << QString::fromStdString(out);
-    out.close();
-}
-
 
