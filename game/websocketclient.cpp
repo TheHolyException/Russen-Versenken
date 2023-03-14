@@ -31,6 +31,11 @@ void WebSocketClient::sendMessage(const QString &message)
     m_webSocket->sendTextMessage(message);
 }
 
+/**
+ * @brief WebSocketClient::sendPacket Sending a Packet to the Server
+ * @param packetID Packet identifier
+ * @param message Message (in json encoded)
+ */
 void WebSocketClient::sendPacket(int packetID, const QString &message) {
     std::map<std::string, JSONUtils::Value> data {
         {"code", packetID},

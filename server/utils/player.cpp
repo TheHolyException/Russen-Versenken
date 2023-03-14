@@ -11,6 +11,12 @@ Player::Player()
     }
 }
 
+/**
+ * @brief Player::sendPacket Send a Packet to the Server
+ *                           Server -> Client
+ * @param packetID Identification of the Packet like (602 is Chat Revceive)
+ * @param message Message (in json encoded)
+ */
 void Player::sendPacket(int packetID, QString &message) {
     std::map<std::string, JSONUtils::Value> data {
         {"code", packetID},

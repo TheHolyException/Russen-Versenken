@@ -6,14 +6,26 @@ PlayerComManager::PlayerComManager(QObject *parent) : QObject(parent){
 
 }
 
+/**
+ * @brief PlayerComManager::setUUID Setting the UUID for the current Player
+ * @param message UUID of the Player
+ */
 void PlayerComManager::setUUID(QString &message) {
      this->uuid = message;
 }
 
+/**
+ * @brief PlayerComManager::getUUID
+ * @return the UUID of the current Player
+ */
 QString PlayerComManager::getUUID() {
     return this->uuid;
 }
 
+/**
+ * @brief PlayerComManager::onTextMessageReceived
+ *        Processing packet
+ */
 void PlayerComManager::onTextMessageReceived(const QString &message) {
     qDebug() << "received from server " + message;
 
