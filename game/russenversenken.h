@@ -22,13 +22,13 @@ class RussenVersenken : public QWidget
     Q_OBJECT
 
 public:
-    static RussenVersenken& getInstance()
+    static RussenVersenken *getInstance()
     {
 
         if (!m_instance) {
            m_instance = new RussenVersenken();
         }
-        return *m_instance;
+        return m_instance;
     }
 
     ~RussenVersenken();
@@ -56,9 +56,11 @@ public:
     void SetShipParts(Ship ship);
     void ResetShipParts(Ship ship);
     bool IsNotOverlapping(Ship ship);
+    bool AllShipsAreSet();
 
     void addChatmessage(QString m);
     void sendGrid();
+    void sendHit(int x,int y);
 
 //debug feature
     QPoint calculateTextPoint(int x, int y);
@@ -73,6 +75,7 @@ private:
     RussenVersenken(QWidget *parent = nullptr);
 
     int rotation =0;
+    bool debug=false;
     inline static RussenVersenken *m_instance;
 //    std::vector<std::vector<Hexagon>> gridPlayer1;
 //    std::vector<std::vector<Hexagon>> gridPlayer2;

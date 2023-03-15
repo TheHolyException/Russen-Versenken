@@ -10,8 +10,8 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    RussenVersenken &w= RussenVersenken::getInstance();
-    w.show();
+    RussenVersenken *w= RussenVersenken::getInstance();
+    w->show();
 
     WebSocketClient &client = WebSocketClient::getInstance();
     client.connectToServer(QUrl("ws://localhost:8888"));

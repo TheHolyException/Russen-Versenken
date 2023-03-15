@@ -39,14 +39,14 @@ void WebSocketServer::onNewConnection() {
     // Player will save that ID, it will act as an authentication Token
     QString playerId = QUuid::createUuid().toString();
 
-    RussenVersenken_Server &rserver=RussenVersenken_Server::getInstance();
+    RussenVersenken_Server *rserver=RussenVersenken_Server::getInstance();
 
-    if( rserver.player1.uuid==""){
-        rserver.player1.uuid=playerId;
-        rserver.player1.webSocket=socket;
+    if( rserver->player1.uuid==""){
+        rserver->player1.uuid=playerId;
+        rserver->player1.webSocket=socket;
     }else{
-        rserver.player2.uuid=playerId;
-        rserver.player2.webSocket=socket;
+        rserver->player2.uuid=playerId;
+        rserver->player2.webSocket=socket;
     }
 
     std::map<std::string, JSONUtils::Value> joinConfirmation {
@@ -126,10 +126,10 @@ void WebSocketServer::onSocketDisconnected() {
         socket->disconnect();
     }
 
-    RussenVersenken_Server rserver=RussenVersenken_Server::getInstance();
+    RussenVersenken_Server *rserver=RussenVersenken_Server::getInstance();
 
-    rserver.player1.uuid="";
-    rserver.player2.uuid="";
+    rserver->player1.uuid="";
+    rserver->player2.uuid="";
 
     m_sockets.clear();
 

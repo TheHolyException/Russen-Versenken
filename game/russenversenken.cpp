@@ -38,7 +38,31 @@ void RussenVersenken::RadioButtonClicked(){
 }
 
 void RussenVersenken::ReadyClicked() {
-    sendGrid();
+    if(phase==1 ){
+        if(AllShipsAreSet() && isPlayersTurn==true){
+            sendGrid();
+            isPlayersTurn=false;
+            ui->chat->insertPlainText("Deine Schiffe wurden gesetzt! Bitte warte bist du am Zug bist.\n");
+            ui->chat->verticalScrollBar()->setValue(ui->chat->verticalScrollBar()->maximum());
+        }else if(!AllShipsAreSet() && isPlayersTurn==true){
+            ui->chat->insertPlainText("Bitte setze erst alle deine Schiffe bevor du bestätigst!\n");
+            ui->chat->verticalScrollBar()->setValue(ui->chat->verticalScrollBar()->maximum());
+        }
+    }else if(phase==2){
+        if(!isPlayersTurn){
+            WebSocketClient::getInstance().sendPacket(153,"");
+        }
+    }else if(phase==3){
+
+        WebSocketClient::getInstance().sendPacket(153,"");
+        for (int i = 0; i < SHIPQUANTITY; ++i) {
+            ships[i].CenterX =0;
+            ships[i].CenterY =0;
+            ships[i].length  =0;
+            ships[i].rotation=0;
+        }
+        ui->chat->insertPlainText("Bitte setze deine Schiffe und Bestätige ihre Position mit dem \"Bereit\"-Knopf.");
+    }
 }
 void RussenVersenken::NameClicked() {
    ui->label->setText(ui->lEditPlayerName->text());
@@ -239,6 +263,7 @@ void RussenVersenken::SetShipParts(Ship ship){
      }
 }
 
+
 void RussenVersenken::ResetShipParts(Ship ship){
      QList<QPoint> hexagons=GetShipHexagons(ship);
 
@@ -256,6 +281,15 @@ bool RussenVersenken::IsNotOverlapping(Ship ship){
          }
      }
      return true;
+}
+
+bool RussenVersenken::AllShipsAreSet(){
+    for (int i = 0; i < SHIPQUANTITY; ++i) {
+        if(ships[i].CenterX ==0 && ships[i].CenterY ==0 ){
+            return false;
+        }
+    }
+    return true;
 }
 
 QList<QPoint> RussenVersenken::GetShipHexagons(Ship ship){
@@ -343,6 +377,13 @@ void RussenVersenken::keyPressEvent( QKeyEvent * event ){
         }
         this->update();
     }
+
+    if( event->key() == Qt::Key_D )
+    {
+        debug=!debug;
+//        QString message = QString::number(5) +","+QString::number(6);
+//        WebSocketClient::getInstance().sendPacket(152, message);
+    }
 }
 
 void RussenVersenken::mouseReleaseEvent(QMouseEvent *event){
@@ -388,18 +429,26 @@ void RussenVersenken::mouseReleaseEvent(QMouseEvent *event){
 
                 Ship ship = Ship(l,x,y,rotation);
 
-                if(IsNotOverlapping(ship)){
+                if(IsNotOverlapping(ship)&& isPlayersTurn){
                     ResetShipParts(ships[shipCount]);
 
                     ships[shipCount]=ship;
                     SetShipParts(ship);
                 }
-            }else if(phase==2 && isPlayersTurn){
-                if(!grid[x-1][y-1].isHit){
+            }else if(phase==2 ){
+                if(!grid[x-1][y-1].isHit && isPlayersTurn){
                     grid[x-1][y-1].isHit=true;
-//                    isPlayersTurn=false;
-                }else{
-
+                    isPlayersTurn=false;
+                    sendHit(x-1,y-1);
+                    ui->chat->insertPlainText("Du hast auf "+(QString)((char)(64+x))+(QString)((char)(48+y))+" geschossen\n");
+                    ui->chat->verticalScrollBar()->setValue(ui->chat->verticalScrollBar()->maximum());
+                    if(debug){
+                        for (int i = 0; i < 10; ++i) {
+                            for (int j = 0; j < 10; ++j) {
+                                sendHit(i,j);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -448,22 +497,34 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
     painter.eraseRect(0,0,1280,1024);
 
 //---------------------------------------------------------------------
-// drawing Hexagon Grid and Hits
+// drawing Hexagon Grid
 //---------------------------------------------------------------------
 
     for (int i = 1; i <= 10; i++) {
         for (int j = 1; j <= 10; j++) {
 
             //debug feature start
-            QPoint point = calculateTextPoint(i,j);
-            point.setX(point.x()-15);
-            QString part= grid[i-1][j-1].isShipPart==true?"t":"f";
-            QString hit = grid[i-1][j-1].isHit==true?"t":"f";
-            QString s = QString::number(i,10)+","+QString::number(j,10)+","+part+","+hit;
-            painter.drawText(point,s);
+//            QPoint point = calculateTextPoint(i,j);
+//            point.setX(point.x()-15);
+//            QString part= grid[i-1][j-1].isShipPart==true?"t":"f";
+//            QString hit = grid[i-1][j-1].isHit==true?"t":"f";
+//            QString s = QString::number(i,10)+","+QString::number(j,10)+","+part+","+hit;
+//            painter.drawText(point,s);
             //debug feature end
+            QPen gridPen;
 
+//            if(isPlayersTurn&& phase==2){
+//                gridPen.setColor(Qt::red);
+
+//            }else{
+//                gridPen.setColor(Qt::black);
+//            }
+
+            painter.save();
+            painter.setPen(gridPen);
             painter.drawPolygon(grid[i-1][j-1].hexagon);
+            painter.restore();
+
         }
     }
 
@@ -519,83 +580,86 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
 //---------------------------------------------------------------------
 //drawing ships
 //---------------------------------------------------------------------
-    int shipHeight=grid[0][0].hexagon.toPolygon().point(1).y()- grid[0][0].hexagon.toPolygon().point(0).y();
+    if(phase<2){
 
-    for (int var = 0; var < SHIPQUANTITY; ++var) {
-        int l= ships[var].length;
-        if(l>=2&& l<=5){
-            int x=ships[var].CenterX;
-            int y=ships[var].CenterY;
-            int r=ships[var].rotation;
+        int shipHeight=grid[0][0].hexagon.toPolygon().point(1).y()- grid[0][0].hexagon.toPolygon().point(0).y();
 
-            painter.save();
+        for (int var = 0; var < SHIPQUANTITY; ++var) {
+            int l= ships[var].length;
+            if(l>=2&& l<=5){
+                int x=ships[var].CenterX;
+                int y=ships[var].CenterY;
+                int r=ships[var].rotation;
 
-            int lShift=(l==2||l==4)?1:0;
+                painter.save();
 
-            QRect shipRect = QRect(-(width*l)/2-(width/2)*lShift,-shipHeight/2,width*l,shipHeight);
+                int lShift=(l==2||l==4)?1:0;
 
-            QPainterPath shipPath;
-            shipPath.addRect(shipRect);
+                QRect shipRect = QRect(-(width*l)/2-(width/2)*lShift,-shipHeight/2,width*l,shipHeight);
 
-            QBrush shipBrush;
-            shipBrush.setColor(Qt::black);
-            shipBrush.setStyle(Qt::SolidPattern);
-            int yShift= y%2==1?0:1;
+                QPainterPath shipPath;
+                shipPath.addRect(shipRect);
 
-            painter.translate(x*width+(width/2)*yShift, y*height);
-            switch (r) {
-            case 0:
-                painter.rotate(0.0);
-                break;
-            case 1:
-                painter.rotate(60.0);
-                break;
-            case 2:
-                painter.rotate(120.0);
-                break;
-            default:
-                break;
+                QBrush shipBrush;
+                shipBrush.setColor(Qt::black);
+                shipBrush.setStyle(Qt::SolidPattern);
+                int yShift= y%2==1?0:1;
+
+                painter.translate(x*width+(width/2)*yShift, y*height);
+                switch (r) {
+                case 0:
+                    painter.rotate(0.0);
+                    break;
+                case 1:
+                    painter.rotate(60.0);
+                    break;
+                case 2:
+                    painter.rotate(120.0);
+                    break;
+                default:
+                    break;
+                }
+
+                painter.drawRect(shipRect);
+                painter.fillPath(shipPath, shipBrush);
+
+                painter.restore();
             }
-
-            painter.drawRect(shipRect);
-//            painter.fillPath(shipPath, shipBrush);
-
-            painter.restore();
-
         }
+    }
 
 //---------------------------------------------------------------------
 //drawing Hits
 //---------------------------------------------------------------------
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
+    for (int i = 1; i <= 10; i++) {
+        for (int j = 1; j <= 10; j++) {
 
-                if(grid[i-1][j-1].isHit){
+            if(grid[i-1][j-1].isHit){
 
-                    QPoint line1Point1=grid[i-1][j-1].hexagon.toPolygon().point(0);
-                    QPoint line1Point2=grid[i-1][j-1].hexagon.toPolygon().point(3);
-                    QPoint line2Point1=grid[i-1][j-1].hexagon.toPolygon().point(1);
-                    QPoint line2Point2=grid[i-1][j-1].hexagon.toPolygon().point(4);
-                    QPen crossPen;
-                    crossPen.setWidth(5);
+                QPoint line1Point1=grid[i-1][j-1].hexagon.toPolygon().point(0);
+                QPoint line1Point2=grid[i-1][j-1].hexagon.toPolygon().point(3);
+                QPoint line2Point1=grid[i-1][j-1].hexagon.toPolygon().point(1);
+                QPoint line2Point2=grid[i-1][j-1].hexagon.toPolygon().point(4);
+                QPen crossPen;
+                crossPen.setWidth(5);
 
-                    if(grid[i-1][j-1].isShipPart){
-                        crossPen.setColor(Qt::red);
+                if(grid[i-1][j-1].isShipPart){
+                    crossPen.setColor(Qt::red);
 
-                    }else{
-                        crossPen.setColor(Qt::gray);
-                    }
-
-                    painter.save();
-                    painter.setPen(crossPen);
-                    painter.drawLine(line1Point1,line1Point2);
-                    painter.drawLine(line2Point1,line2Point2);
-                    painter.restore();
+                }else{
+                    crossPen.setColor(Qt::gray);
                 }
+
+                painter.save();
+                painter.setPen(crossPen);
+                painter.drawLine(line1Point1,line1Point2);
+                painter.drawLine(line2Point1,line2Point2);
+                painter.restore();
             }
         }
     }
 }
+
 
 void RussenVersenken::sendGrid() {
     std::map<std::string, JSONUtils::Value> gridMap;
@@ -611,3 +675,8 @@ void RussenVersenken::sendGrid() {
     WebSocketClient::getInstance().sendPacket(151, message);
 }
 
+void RussenVersenken::sendHit(int x,int y) {
+
+    QString message ="{\"x\":\"" +  QString::number(x) + "\",\"y\":\"" +  QString::number(y) + "\"}";
+    WebSocketClient::getInstance().sendPacket(152, message);
+}

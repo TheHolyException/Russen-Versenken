@@ -1,7 +1,7 @@
 #ifndef SHIP_H
 #define SHIP_H
 
-#define SHIPQUANTITY 6
+#define SHIPQUANTITY 5
 
 #include <QObject>
 
