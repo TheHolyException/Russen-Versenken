@@ -1,4 +1,5 @@
 #include "servercommanager.h"
+#include "utils/csvinterface.h"
 
 ServerComManager::ServerComManager(QObject *parent) : QObject(parent) {
 
@@ -58,6 +59,12 @@ void ServerComManager::onTextMessageReceived(const QString &message) {
         }else if(uuid == rServer->player2.uuid){
              rServer->player1.grid[x][y].isHit=true;
         }
+
+        int playerId= CSVInterface::getPlayerID(player->name);
+
+        QString fieldNo = (QString)((char)(64+x))+(QString)((char)(48+y));
+
+        CSVInterface::afterTurn(rServer->matchId,playerId,fieldNo,std::time(nullptr));
 
         break;
     }

@@ -21,6 +21,7 @@ public:
     Player player1;
     Player player2;
     int phase;
+    int matchId;
     Player *activePlayer=nullptr;
     QPoint hit;
     bool waitingForOtherPlayer;

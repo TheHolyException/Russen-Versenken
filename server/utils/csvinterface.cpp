@@ -80,7 +80,7 @@ bool CSVInterface::getPlayerScore(int playerid, int *totalPlayed, int *totalWins
  * @param playerid  ID of the player
  * @param fieldno   Fieldnumber
  */
-void CSVInterface::afterTurn(int matchid, int playerid, int fieldno, long timestamp) {
+void CSVInterface::afterTurn(int matchid, int playerid, QString fieldno, long timestamp) {
     int lastTurn = -1;
     QString turnDataRaw = "#turnno,matchid,playerid,fieldno\n";
     if (turnsDB.open(QIODevice::ReadOnly)) {
@@ -103,7 +103,7 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno, long timest
                    QString::number(++lastTurn) +
             ","  + QString::number(matchid) +
             ","  + QString::number(playerid) +
-            ","  + QString::number(fieldno) +
+            ","  + fieldno +
             ","  + QString::number(timestamp) + "\n";
 
     // Writing the turn information to the turns.csv

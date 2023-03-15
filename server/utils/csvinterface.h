@@ -13,7 +13,7 @@ public:
     static int  getPlayerID(QString name);
     static bool getPlayerScore(int playerid, int* totalPlayed, int* totalWins);
     static int  createMatch();
-    static void afterTurn(int matchid, int playerid, int fieldno, long timestamp);
+    static void afterTurn(int matchid, int playerid, QString fieldno, long timestamp);
     static void afterMatch(int matchid, int playerid1, int playerid2,
                            int winnerid);
 };

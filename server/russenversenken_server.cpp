@@ -1,5 +1,6 @@
 #include "russenversenken_server.h"
 #include "qtimer.h"
+#include "utils\csvinterface.h"
 
 RussenVersenken_Server::RussenVersenken_Server()
 {
@@ -60,6 +61,7 @@ void RussenVersenken_Server::Game(){
             qDebug() << "phase 2";
             player1.isReady=false;
             player2.isReady=false;
+            matchId=CSVInterface::createMatch();
         }
     }else if(phase==2){
         if(activePlayer==nullptr){
@@ -147,4 +149,10 @@ void RussenVersenken_Server::gameWon(Player *player){
     player2.sendPacket(301,m) ;
     player1.isReady=false;
     player2.isReady=false;
+
+    int player1Id=CSVInterface::getPlayerID(player1.name);
+    int player2Id=CSVInterface::getPlayerID(player2.name);
+    int winnerId =CSVInterface::getPlayerID(player->name);
+
+    CSVInterface::afterMatch(matchId,player1Id,player2Id,winnerId);
 }
