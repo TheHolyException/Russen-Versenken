@@ -80,7 +80,7 @@ bool CSVInterface::getPlayerScore(int playerid, int *totalPlayed, int *totalWins
  * @param playerid  ID of the player
  * @param fieldno   Fieldnumber
  */
-void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
+void CSVInterface::afterTurn(int matchid, int playerid, int fieldno, long timestamp) {
     int lastTurn = -1;
     QString turnDataRaw = "#turnno,matchid,playerid,fieldno\n";
     if (turnsDB.open(QIODevice::ReadOnly)) {
@@ -91,7 +91,7 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
             if (line.startsWith('#')) continue; // Skipping Header
 
             QStringList lineData = line.split(',');
-            if (lineData.at(1).toInt() == matchid )
+            if (lineData.at(1).toInt() == matchid)
                 lastTurn = lineData.at(0).toInt();
 
             turnDataRaw += line+"\n";
@@ -103,7 +103,8 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
                    QString::number(++lastTurn) +
             ","  + QString::number(matchid) +
             ","  + QString::number(playerid) +
-            ","  + QString::number(fieldno) + "\n";
+            ","  + QString::number(fieldno) +
+            ","  + QString::number(timestamp) + "\n";
 
     // Writing the turn information to the turns.csv
     if (turnsDB.open(QIODevice::WriteOnly)) {
@@ -114,15 +115,42 @@ void CSVInterface::afterTurn(int matchid, int playerid, int fieldno) {
     }
 }
 
+/**
+ * @brief CSVInterface::createMatch Creates a new Match
+ * @return returns a new MatchID
+ */
+int CSVInterface::createMatch() {
+    int result = -1;
+    if (matchDB.open(QIODevice::ReadOnly)) {
+        QTextStream is(&matchDB);
+        while(!is.atEnd()) {
+            QString line = is.readLine();
+            if (line.startsWith("#")) continue; // Skip header
+            QStringList lineData = line.split(',');
 
-void CSVInterface::afterMatch(int playerid1, int playerid2,
-                              int winnerid, long matchTime) {
+            int id = lineData.at(0).toInt();
+            result = id;
+        }
+        matchDB.close();
+    }
+    result +=1;
+    return result;
+}
+
+/**
+ * @brief CSVInterface::afterMatch should be executed after every match
+ * @param playerid1     ID of player 1
+ * @param playerid2     ID of player 2
+ * @param winnerid      ID of the winner
+ * @param matchTime     Game duration in milliseconds
+ */
+void CSVInterface::afterMatch(int matchid, int playerid1, int playerid2, int winnerid) {
     // Writing matchdata to the match.csv
     if (matchDB.open(QIODevice::Append)) {
         QTextStream os(&matchDB);
-        os <<        QString::number(playerid1) +
+        os <<       QString::number(matchid) +
+              "," + QString::number(playerid1) +
               "," + QString::number(playerid2) +
-              "," + QString::number(matchTime) +
               "," + QString::number(winnerid) + "\n";
         os.flush();
         matchDB.close();

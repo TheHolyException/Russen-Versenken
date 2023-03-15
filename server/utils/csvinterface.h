@@ -12,9 +12,10 @@ private:
 public:
     static int  getPlayerID(QString name);
     static bool getPlayerScore(int playerid, int* totalPlayed, int* totalWins);
-    static void afterTurn(int matchid, int playerid, int fieldno);
-    static void afterMatch(int playerid1, int playerid2,
-                           int winnerid, long matchTime);
+    static int  createMatch();
+    static void afterTurn(int matchid, int playerid, int fieldno, long timestamp);
+    static void afterMatch(int matchid, int playerid1, int playerid2,
+                           int winnerid);
 };
 
 #endif // CSVINTERFACE_H
