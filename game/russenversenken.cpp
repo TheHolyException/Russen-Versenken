@@ -368,8 +368,7 @@ QPoint RussenVersenken::GetRightNeighbourHexagon(int x, int y, int r){
 
 void RussenVersenken::keyPressEvent( QKeyEvent * event ){
 
-    if(phase==1 && event->key() == Qt::Key_R )
-    {
+    if(phase==1 && event->key() == Qt::Key_R ) {
         if(rotation!=2){
             rotation+=1;
         }else{
@@ -378,11 +377,8 @@ void RussenVersenken::keyPressEvent( QKeyEvent * event ){
         this->update();
     }
 
-    if( event->key() == Qt::Key_D )
-    {
+    if( event->key() == Qt::Key_D ){
         debug=!debug;
-//        QString message = QString::number(5) +","+QString::number(6);
-//        WebSocketClient::getInstance().sendPacket(152, message);
     }
 }
 
@@ -502,24 +498,7 @@ void RussenVersenken:: paintEvent(QPaintEvent * /* event */){
 
     for (int i = 1; i <= 10; i++) {
         for (int j = 1; j <= 10; j++) {
-
-            //debug feature start
-//            QPoint point = calculateTextPoint(i,j);
-//            point.setX(point.x()-15);
-//            QString part= grid[i-1][j-1].isShipPart==true?"t":"f";
-//            QString hit = grid[i-1][j-1].isHit==true?"t":"f";
-//            QString s = QString::number(i,10)+","+QString::number(j,10)+","+part+","+hit;
-//            painter.drawText(point,s);
-            //debug feature end
             QPen gridPen;
-
-//            if(isPlayersTurn&& phase==2){
-//                gridPen.setColor(Qt::red);
-
-//            }else{
-//                gridPen.setColor(Qt::black);
-//            }
-
             painter.save();
             painter.setPen(gridPen);
             painter.drawPolygon(grid[i-1][j-1].hexagon);

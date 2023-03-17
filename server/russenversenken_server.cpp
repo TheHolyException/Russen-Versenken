@@ -2,8 +2,7 @@
 #include "qtimer.h"
 #include "utils\csvinterface.h"
 
-RussenVersenken_Server::RussenVersenken_Server()
-{
+RussenVersenken_Server::RussenVersenken_Server() {
     player1 = Player();
     player2 = Player();;
     phase =0;

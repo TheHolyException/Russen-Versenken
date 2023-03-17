@@ -1,7 +1,6 @@
 #include "websocketclient.h"
 
-WebSocketClient::WebSocketClient(QObject *parent) : QObject(parent)
-{
+WebSocketClient::WebSocketClient(QObject *parent) : QObject(parent) {
     m_webSocket = new QWebSocket();
     pmm = new PlayerComManager();
 
@@ -12,21 +11,18 @@ WebSocketClient::WebSocketClient(QObject *parent) : QObject(parent)
     connect(m_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &WebSocketClient::onError);
 }
 
-WebSocketClient::~WebSocketClient()
-{
+WebSocketClient::~WebSocketClient() {
     m_webSocket->close();
     delete m_webSocket;
 }
 
-void WebSocketClient::connectToServer(const QUrl &url)
-{
+void WebSocketClient::connectToServer(const QUrl &url) {
     m_webSocket->open(url);
     m_webSocket->sendTextMessage("Hello World!");
     m_webSocket->flush();
 }
 
-void WebSocketClient::sendMessage(const QString &message)
-{
+void WebSocketClient::sendMessage(const QString &message) {
     qDebug() << "Sending: " + message;
     m_webSocket->sendTextMessage(message);
 }
@@ -52,18 +48,15 @@ void WebSocketClient::waitUntilConnected() {
     }
 }
 
-void WebSocketClient::onConnected()
-{
+void WebSocketClient::onConnected() {
     emit connected();
 }
 
-void WebSocketClient::onDisconnected()
-{
+void WebSocketClient::onDisconnected() {
     emit disconnected();
 }
 
-void WebSocketClient::onError(QAbstractSocket::SocketError error)
-{
+void WebSocketClient::onError(QAbstractSocket::SocketError error) {
     qDebug() << "ERROR " + m_webSocket->errorString();
 }
 

@@ -2,8 +2,7 @@
 
 Hexagon::Hexagon(){}
 
-Hexagon::Hexagon(int x, int y)
-{
+Hexagon::Hexagon(int x, int y) {
     hexagon = calculatePoly(x,y);
     isShipPart = false;
     isHit = false;
