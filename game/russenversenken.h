@@ -31,7 +31,6 @@ public:
         return m_instance;
     }
 
-    ~RussenVersenken();
     void paintEvent(QPaintEvent *event) override;
 
     Hexagon grid[10][10];
@@ -73,6 +72,7 @@ public slots:
         void NameClicked();
 private:
     RussenVersenken(QWidget *parent = nullptr);
+    ~RussenVersenken();
 
     int rotation =0;
     bool debug=false;

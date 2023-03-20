@@ -8,7 +8,5 @@ Hexagon::Hexagon(int x, int y)
     isHit = false;
     centerX=x;
     centerY=y;
-
-
 }
 

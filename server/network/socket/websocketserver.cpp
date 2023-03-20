@@ -24,8 +24,8 @@ WebSocketServer::~WebSocketServer() {
 
 WebSocketServer* WebSocketServer::m_instance = nullptr;
 
-WebSocketServer& WebSocketServer::getInstance(quint16 port)
-{
+// ඞ
+WebSocketServer& WebSocketServer::getInstance(quint16 port) {
     if(!m_instance)
         m_instance = new WebSocketServer(port);
     return *m_instance;

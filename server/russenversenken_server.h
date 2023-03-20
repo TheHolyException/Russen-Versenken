@@ -5,10 +5,12 @@
 #include "utils/player.h"
 #include <QObject>
 
+
 class RussenVersenken_Server : public QObject
 {
     Q_OBJECT
 public:
+    // ඞ
 
     static RussenVersenken_Server *getInstance()
     {

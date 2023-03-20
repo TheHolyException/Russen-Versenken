@@ -20,24 +20,13 @@
  * QList of QWebSocket objects. It provides methods for handling incoming
  * messages, establishing new connections, and broadcasting messages to all
  * connected clients.
- * @note
- * Code 200 - Connection established
- * Code 201 - Received Message
- * Code 202 - Received Binary Message
  * @example example_websocketserver_usage.cpp
  */
 class WebSocketServer : public QObject
 {
 public:
-    /**
-     * @brief Constructs a WebSocketServer object with the given parent.
-     * @param port The port number on which to listen for incoming connections.
-     * @param parent The parent object.
-     */
-    WebSocketServer(quint16 port, QObject *parent = 0);
 
     // Add Docs
-    ~WebSocketServer();
     ServerComManager getServerCommandManager();
 
     /**
@@ -73,6 +62,15 @@ private slots:
     void onSocketDisconnected();
 
 private:
+
+    /**
+     * @brief Constructs a WebSocketServer object with the given parent.
+     * @param port The port number on which to listen for incoming connections.
+     * @param parent The parent object.
+     */
+    WebSocketServer(quint16 port, QObject *parent = 0);
+    ~WebSocketServer();
+
     /**
      * @brief The main WebSocket server object
      * This member variable represents the main WebSocket server object.
