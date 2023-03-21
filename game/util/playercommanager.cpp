@@ -24,6 +24,12 @@ QString PlayerComManager::getUUID() {
 /**
  * @brief PlayerComManager::onTextMessageReceived
  *        Processing packet
+ *
+ *        Example Package:
+ *        {
+ *          "code":602,
+ *          "payload":"eyJDaGF0TmFjaHJpY2h0Ijoi4LaeIn0="
+ *        }
  */
 void PlayerComManager::onTextMessageReceived(const QString &message) {
     qDebug() << "[RX]: " + message;

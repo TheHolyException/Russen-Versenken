@@ -6,6 +6,14 @@ ServerComManager::ServerComManager(QObject *parent) : QObject(parent) {}
 /**
  * @brief ServerComManager::onTextMessageReceived
  *        Processing packet
+ *
+ *        Example Packet:
+ *
+ *        {
+ *          "UUID"    : "730bc699-2513-4818-857f-e16a208bdab9", // Sender UUID
+ *          "code"    : 601,                                    // Packet ID
+ *          "payload" : "eyJDaGF0TmFjaHJpY2h0Ijoi4LaeIn0="      // Payload (encoded in Base64)
+ *        }
  */
 void ServerComManager::onTextMessageReceived(const QString &message) {
     // reading JSON Data and converting it to a JSON Object
