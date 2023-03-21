@@ -1,9 +1,6 @@
 #include "jsonutils.h"
 
-JSONUtils::JSONUtils()
-{
-
-}
+JSONUtils::JSONUtils(){}
 
 std::string JSONUtils::generateJSON(const std::map<std::string, Value>& data) {
     std::stringstream json;

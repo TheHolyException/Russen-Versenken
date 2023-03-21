@@ -23,7 +23,7 @@ void WebSocketClient::connectToServer(const QUrl &url) {
 }
 
 void WebSocketClient::sendMessage(const QString &message) {
-    qDebug() << "Sending: " + message;
+    qDebug() << "[TX]: " + message;
     m_webSocket->sendTextMessage(message);
 }
 

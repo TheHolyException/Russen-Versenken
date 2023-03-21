@@ -28,6 +28,12 @@ QList<QPointF> Hexagon::calcualtePolyPoints(int centerX,int centerY){
     return points;
 }
 
+/**
+ * @brief Hexagon::calculatePoly calculating all 6 Points for the Hexagon
+ * @param x CenterX
+ * @param y CenterY
+ * @return
+ */
 QPolygonF Hexagon::calculatePoly(int x, int y){
 
     int width =WIDTH;
@@ -37,8 +43,7 @@ QPolygonF Hexagon::calculatePoly(int x, int y){
     if(y%2==1){
 
         points = calcualtePolyPoints(width *x,height*y);
-    }else
-    {
+    }else{
         points = calcualtePolyPoints(width*x+width/2,height*y);
     }
 

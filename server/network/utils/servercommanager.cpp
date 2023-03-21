@@ -1,35 +1,40 @@
 #include "servercommanager.h"
 #include "utils/csvinterface.h"
 
-ServerComManager::ServerComManager(QObject *parent) : QObject(parent) {
+ServerComManager::ServerComManager(QObject *parent) : QObject(parent) {}
 
-}
-
+/**
+ * @brief ServerComManager::onTextMessageReceived
+ *        Processing packet
+ */
 void ServerComManager::onTextMessageReceived(const QString &message) {
+    // reading JSON Data and converting it to a JSON Object
     QJsonDocument document = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject data = document.object();
 
     RussenVersenken_Server *rServer =RussenVersenken_Server::getInstance();
 
+    // Getting player instance from UUID
     QString uuid = data["UUID"].toString();
-  //  qDebug() << data["code"].toInt();
     Player *player=nullptr;
     if(uuid == rServer->player1.uuid){
         player = &rServer->player1;
-
     }else if(uuid == rServer->player2.uuid){
         player = &rServer->player2;
+    }else{
+        return;
     }
 
+    // Decode payload to JSON Object
     QJsonDocument payloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded);
     QJsonObject payloadData = payloadDoc.object();
 
     QString m ="";
 
+    // Processing packet by ID
     switch (data["code"].toInt()) {
 
     case 151: {// Receive Grid Data
-       // qDebug() << payloadData;
         Hexagon grid[10][10];
 
         for (int i = 0; i < 100; i ++) {

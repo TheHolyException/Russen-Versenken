@@ -3,9 +3,7 @@
 #include "ui_russenversenken.h"
 #include "websocketclient.h"
 
-PlayerComManager::PlayerComManager(QObject *parent) : QObject(parent){
-
-}
+PlayerComManager::PlayerComManager(QObject *parent) : QObject(parent){}
 
 /**
  * @brief PlayerComManager::setUUID Setting the UUID for the current Player
@@ -28,18 +26,21 @@ QString PlayerComManager::getUUID() {
  *        Processing packet
  */
 void PlayerComManager::onTextMessageReceived(const QString &message) {
-    qDebug() << "received from server " + message;
+    qDebug() << "[RX]: " + message;
 
+    // Parse message as JSONObject
     QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject data = jsonDoc.object();
 
     RussenVersenken *r = RussenVersenken::getInstance();
 
+    // Decoding payload and create an JSONObject
     QJsonDocument payloadDoc = QJsonDocument::fromJson(QByteArray::fromBase64Encoding(data["payload"].toString().toUtf8()).decoded);
     QJsonObject payloadData = payloadDoc.object();
 
     QString m;
 
+    // Processing packet by ID
     switch (data["code"].toInt()) {
     case 101: // Init game Lobby
         this->onInit(data);
@@ -48,8 +49,6 @@ void PlayerComManager::onTextMessageReceived(const QString &message) {
 
         break;
     case 151: {// Receive Grid Data
-        qDebug() << payloadData;
-
         for (int i = 0; i < 100; i ++) {
             QStringList datas = payloadData[QString::fromStdString(std::to_string(i))].toString().split("#");
             r->grid[i%10][i/10].isShipPart = datas.at(0) == "0" ? false : true;

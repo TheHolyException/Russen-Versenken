@@ -8,8 +8,7 @@
 #define WIDTH  sqrt(3)*RADIUS;
 #define HEIGHT int(1.5*(float)RADIUS);
 
-class Hexagon
-{
+class Hexagon {
 public:
     Hexagon();
     Hexagon(int x, int y);

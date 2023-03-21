@@ -1,8 +1,7 @@
 #include "player.h"
 
 
-Player::Player()
-{
+Player::Player() {
     uuid="";
     isReady=false;
     for (int i = 0; i < 10; i++) {

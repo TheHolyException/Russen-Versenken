@@ -5,8 +5,7 @@
 
 #include <QObject>
 
-class Ship
-{
+class Ship {
 public:
     Ship();
     Ship(int l,int x,int y,int r);

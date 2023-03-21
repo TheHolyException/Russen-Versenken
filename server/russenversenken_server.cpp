@@ -15,6 +15,11 @@ RussenVersenken_Server::RussenVersenken_Server() {
     m_timer->start();
 }
 
+/**
+ * @brief RussenVersenken_Server::sendGrid Sending the full Grid to the given Player
+ * @param grid
+ * @param player
+ */
 void RussenVersenken_Server::sendGrid(Hexagon grid[10][10], Player *player) {
     std::map<std::string, JSONUtils::Value> gridMap;
     int pos = 0;
