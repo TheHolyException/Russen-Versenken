@@ -12,7 +12,6 @@ RussenVersenken::RussenVersenken(QWidget *parent) : QWidget(parent) , ui(new Ui:
     connect(ui->rbtn3er2,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn4er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
     connect(ui->rbtn5er,SIGNAL(clicked()), this, SLOT(RadioButtonClicked()));
-    connect(ui->pbtnPhase,SIGNAL(clicked()), this, SLOT(PhaseButtonClicked()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(ReadyClicked()));
     connect(ui->sendButton, SIGNAL(clicked()), this, SLOT(SendClicked()));
     connect(ui->pbtnPlayerName, SIGNAL(clicked()), this, SLOT(NameClicked()));
@@ -70,14 +69,6 @@ void RussenVersenken::NameClicked() {
    ui->nameFrame->close();
 
    WebSocketClient::getInstance().sendPacket(501,"{\"name\":\"" + ui->lEditPlayerName->text() + "\"}");
-}
-
-void RussenVersenken::PhaseButtonClicked(){
-    if(phase==2){
-        phase=0;
-    }else{
-        phase+=1;
-    }
 }
 
 void RussenVersenken::SendClicked(){

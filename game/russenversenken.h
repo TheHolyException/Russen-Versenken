@@ -31,22 +31,35 @@ public:
         return m_instance;
     }
 
-    void paintEvent(QPaintEvent *event) override;
-
     Hexagon grid[10][10];
-    Ship ships[SHIPQUANTITY];
-    QRadioButton *clickedRadioButton;
     int phase=0;
     bool isPlayersTurn=true;
     Ui::RussenVersenken *ui;
 
-    bool PointInPolygon(QPoint point, QPolygon polygon);
-    void ClickedHexagon(int &x,int &y, QPoint pos);
-
+    void paintEvent(QPaintEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent( QKeyEvent * event ) override;
 
-    bool IsLegitPosition(int l,int x,int y);
+    void addChatmessage(QString m);
+
+private slots:
+        void RadioButtonClicked();
+        void ReadyClicked();
+        void SendClicked();
+        void NameClicked();
+private:
+
+    Ship ships[SHIPQUANTITY];
+    QRadioButton *clickedRadioButton;
+    int rotation = 0;
+    bool debug = false;
+    inline static RussenVersenken *m_instance;
+
+    RussenVersenken(QWidget *parent = nullptr);
+    ~RussenVersenken();
+
+    bool PointInPolygon(QPoint point, QPolygon polygon);
+    void ClickedHexagon(int &x,int &y, QPoint pos);
 
     QList<QPoint> GetShipHexagons(Ship ship);
     QPoint GetLeftNeighbourHexagon(int x, int y, int r);
@@ -56,29 +69,13 @@ public:
     void ResetShipParts(Ship ship);
     bool IsNotOverlapping(Ship ship);
     bool AllShipsAreSet();
+    bool IsLegitPosition(int l,int x,int y);
 
-    void addChatmessage(QString m);
     void sendGrid();
     void sendHit(int x,int y);
 
-//debug feature
-    QPoint calculateTextPoint(int x, int y);
-
-public slots:
-        void RadioButtonClicked();
-        void PhaseButtonClicked();
-        void ReadyClicked();
-        void SendClicked();
-        void NameClicked();
-private:
-    RussenVersenken(QWidget *parent = nullptr);
-    ~RussenVersenken();
-
-    int rotation =0;
-    bool debug=false;
-    inline static RussenVersenken *m_instance;
-//    std::vector<std::vector<Hexagon>> gridPlayer1;
-//    std::vector<std::vector<Hexagon>> gridPlayer2;
+    //debug feature
+        QPoint calculateTextPoint(int x, int y);
 
 
     void createGrid();
